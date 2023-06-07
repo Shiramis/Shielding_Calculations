@@ -337,11 +337,15 @@ class ddepartment():
         if self.d["vrawork " + str(t)].get() == 1:
             if self.d["numpapwe " + str(t)] is not None:
                 self.d["numpapwe " + str(t)].destroy()
+            if self.d["worentry " + str(t)] is not None:
+                self.d["worentry " + str(t)].destroy()
             self.d["worentry " + str(t)] = ttk.Entry(master=self.d["frame_1 " + str(t)], width=10)
             self.d["worentry " + str(t)].grid(row=5, column=1, pady=5, padx=5)
         elif self.d["vrawork " + str(t)].get() == 2:
             if self.d["worentry " + str(t)] is not None:
                 self.d["worentry " + str(t)].destroy()
+            if self.d["numpapwe " + str(t)] is not None:
+                self.d["numpapwe " + str(t)].destroy()
             self.d["numpapwe " + str(t)] = ttk.Entry(master=self.d["frame_1 " + str(t)], width=10)
             self.d["numpapwe " + str(t)].grid(row=6, column=1, pady=5, padx=5, sticky="w")
 

@@ -20,6 +20,7 @@ class dep_defs():
                 self.d["use_ent {0}".format(str(self.d["x " + str(t)]))] = None
                 self.d["presh {0}".format(str(self.d["x " + str(t)]))] = None
                 self.d["preshvar {0}".format(str(self.d["x " + str(t)])) + self.d["nr "+str(t)]] = IntVar(value=0)
+                self.d["preshuns {0}".format(str(self.d["x " + str(t)])) + self.d["nr " + str(t)]] = IntVar(value=0)
                 self.d["radbucky {0}".format(str(self.d["x " + str(t)]))] = None
                 self.d["radcross {0}".format(str(self.d["x " + str(t)]))] = None
                 self.d["radiob_pre {0}".format(str(self.d["x " + str(t)]))+self.d["nr "+str(t)]] = IntVar(value=0)
@@ -285,11 +286,15 @@ class dep_defs():
         if self.d["vrawork " + str(e)+nr].get() == 1:
             if self.d["numpapwe " + str(e)+nr] is not None:
                 self.d["numpapwe " + str(e)+nr].destroy()
+            if self.d["worentry " + str(e)+nr] is not None:
+                self.d["worentry " + str(e)+nr].destroy()
             self.d["worentry " + str(e)+nr] = ttk.Entry(master=self.d["barrierf " + str(e) + nr], width=10)
             self.d["worentry " + str(e)+nr].grid(row=17, column=1, pady=5, padx=5)
         elif self.d["vrawork " + str(e)+nr].get() == 2:
             if self.d["worentry " + str(e)+nr] is not None:
                 self.d["worentry " + str(e)+nr].destroy()
+            if self.d["numpapwe " + str(e)+nr] is not None:
+                self.d["numpapwe " + str(e)+nr].destroy()
             self.d["numpapwe " + str(e)+nr] = ttk.Entry(master=self.d["barrierf " + str(e) + nr], width=10)
             self.d["numpapwe " + str(e)+nr].grid(row=18, column=1, pady=5, padx=5, sticky="w")
 
@@ -324,6 +329,10 @@ class dep_defs():
                 self.d["lau " + str(e)].destroy()
                 self.d["use_ent " + str(e)].destroy()
                 self.d["presh " + str(e)].destroy()
+                self.d["preunsh " + str(e)].destroy()
+                if self.d["laks " + str(e) + nr] is not None:
+                    self.d["laks " + str(e) + nr].destroy()
+                    self.d["entk " + str(e) + nr].destroy()
             if self.d["leak " + str(e) + nr] is not None:
                 if  self.d["airkerv " + str(e) + nr].get()== 1:
                     self.d["radside "+str(e)+nr].destroy()
@@ -331,15 +340,23 @@ class dep_defs():
                     self.d["leak " + str(e) + nr].destroy()
                     self.d["forw " + str(e) + nr].destroy()
                     self.d["side " + str(e) + nr].destroy()
+                    self.d["write " + str(e) + nr].destroy()
+                elif self.d["airkerv " + str(e) + nr].get()== 4:
+                    self.d["leak " + str(e) + nr].destroy()
+                    self.d["forw " + str(e) + nr].destroy()
+                    self.d["side " + str(e) + nr].destroy()
+                    self.d["write " + str(e) + nr].destroy()
+                    self.d["laks " + str(e) + nr].destroy()
+                    self.d["entk " + str(e) + nr].destroy()
                 else:
                     self.d["leak " + str(e) + nr].destroy()
                     self.d["forw " + str(e) + nr].destroy()
                     self.d["side " + str(e) + nr].destroy()
-
+                    self.d["write " + str(e) + nr].destroy()
             #=========use factor====================
             self.d["lau "+str(e)] = ttk.Label(master=self.d["barrierf " + str(e)+nr], style="AL.TLabel",
                                     text="Use Factor:")
-            self.d["lau "+str(e)].grid(row=4, column=0, pady=10, padx=10, sticky="w")
+            self.d["lau "+str(e)].grid(row=3, column=0, pady=10, padx=10, sticky="w")
             self.d["use_ent "+str(e)] = ttk.Entry(
                 master=self.d["barrierf " + str(e)+nr], width=10)
             if e==1:
@@ -356,26 +373,38 @@ class dep_defs():
                         self.d["use_ent " + str(e)].insert(0, str(0.02))
                 else:
                     self.d["use_ent " + str(e)].insert(0, str(1/4))
-            self.d["use_ent " + str(e)].grid(row=4, column=1, pady=10, padx=10, sticky="w")
+            self.d["use_ent " + str(e)].grid(row=3, column=1, pady=10, padx=10, sticky="w")
             #==========Preshielding===========
             self.d["presh "+str(e)]=ttk.Checkbutton(master=self.d["barrierf " + str(e)+nr], text= "Preshielding",
                                                     variable=self.d["preshvar "+str(e) + nr],
                                                     offvalue=0, onvalue=1, command=lambda: self.pres(e,nr))
-            self.d["presh " + str(e)].grid(row=5, column=0, pady=10, padx=10, sticky="w")
+            self.d["presh " + str(e)].grid(row=4, column=0, pady=10, padx=10, sticky="w")
+            #===========unshielding air kerma=================
+            self.d["preunsh " + str(e)] = ttk.Checkbutton(master=self.d["barrierf " + str(e) + nr], text="Unshielded air kerma",
+                                                        variable=self.d["preshuns " + str(e) + nr], offvalue=0,
+                                                        onvalue=1, command=lambda: self.uns(e, nr))
+            self.d["preunsh " + str(e)].grid(row=4, column=1, pady=10, padx=10, sticky="w")
+
+
         elif self.d["radiob_w "+str(e)+nr].get() == 2:
             if self.d["leak " + str(e) + nr] is not None:
                 self.d["leak " + str(e) + nr].destroy()
                 self.d["side " + str(e) + nr].destroy()
                 self.d["forw " + str(e) + nr].destroy()
+                self.d["write " + str(e) + nr].destroy()
             if self.d["lau "+str(e)] is not None:
                 self.d["lau " + str(e)].destroy()
                 self.d["use_ent " + str(e)].destroy()
+                self.d["preunsh " + str(e)].destroy()
                 if  self.d["preshvar " + str(e) + nr].get()== 1:
                     self.d["radbucky " + str(e)].destroy()
                     self.d["radcross " + str(e)].destroy()
                     self.d["presh " + str(e)].destroy()
                 elif self.d["preshvar " + str(e) + nr].get()== 0:
                     self.d["presh " + str(e)].destroy()
+                if self.d["laks " + str(e) + nr] is not None:
+                    self.d["laks " + str(e) + nr].destroy()
+                    self.d["entk " + str(e) + nr].destroy()
             # ====================Leakage========================
             self.d["leak " + str(e) + nr] = ttk.Radiobutton(
                 master=self.d["barrierf " + str(e) + nr],text="Leakage radiation",
@@ -394,6 +423,19 @@ class dep_defs():
                 text="Unshielded air kerma", variable=self.d["airkerv " + str(e) + nr], value=4,
                  command=lambda : self.leakage(e, nr))
             self.d["write " + str(e) + nr].grid(row=3, column=1, pady=10, padx=10, sticky="w")
+
+    def uns(self,e,nr):
+        if self.d["preshuns " + str(e) + nr].get()== 1:
+            self.d["laks " + str(e) + nr] = ttk.Label(master=self.d["barrierf " + str(e) + nr], text="Ksec (mGy/patient):")
+            self.d["laks " + str(e) + nr].grid(row=6, column=0, pady=10, padx=10, sticky="w")
+            self.d["entk " + str(e) + nr] = ttk.Entry(master=self.d["barrierf " + str(e) + nr], width=10)
+            self.d["entk " + str(e) + nr].grid(row=6, column=1, pady=10, padx=10, sticky="w")
+
+        elif self.d["preshuns " + str(e) + nr].get()==0:
+            if self.d["laks " + str(e) + nr] is not None:
+                self.d["laks " + str(e) + nr].destroy()
+                self.d["entk " + str(e) + nr].destroy()
+
 
     def numbmater(self,e,nr,t):
         if self.d["m "+ str(e) + nr]  < self.d["vnumbmat " +str(e)+nr].get():
@@ -436,10 +478,10 @@ class dep_defs():
         if self.d["preshvar " + str(e) + nr].get()== 1:
             self.d["radbucky "+str(e)] = ttk.Radiobutton(master=self.d["barrierf " + str(e) + nr],
                 variable=self.d["radiob_pre " + str(e)+nr], text="Bucky", value=1)
-            self.d["radbucky " + str(e)].grid(row=6, column=0, pady=10, padx=10, sticky="w")
+            self.d["radbucky " + str(e)].grid(row=5, column=0, pady=10, padx=10, sticky="w")
             self.d["radcross " +str(e)] = ttk.Radiobutton(master=self.d["barrierf " + str(e) + nr],
                 variable=self.d["radiob_pre " + str(e)+nr], text="Cross-table", value=2)
-            self.d["radcross " + str(e)].grid(row=6, column=1, pady=10, padx=10, sticky="w")
+            self.d["radcross " + str(e)].grid(row=5, column=1, pady=10, padx=10, sticky="w")
 
         elif self.d["preshvar "+str(e) + nr].get()==0:
 
@@ -475,7 +517,7 @@ class dep_defs():
             if self.d["laks "+ str(e) + nr] is not None:
                 self.d["laks " + str(e) + nr].destroy()
                 self.d["entk " + str(e) + nr].destroy()
-            self.d["laks "+ str(e) + nr]=ttk.Label(master=self.d["barrierf " + str(e) + nr], text="Ksec (mGy/week):")
+            self.d["laks "+ str(e) + nr]=ttk.Label(master=self.d["barrierf " + str(e) + nr], text="Ksec (mGy/patient):")
             self.d["laks "+ str(e) + nr].grid(row=4, column=0, pady=10, padx=10, sticky="w")
             self.d["entk "+ str(e) + nr]=ttk.Entry(master=self.d["barrierf " + str(e) + nr], width=10)
             self.d["entk " + str(e) + nr].grid(row=4, column=1, pady=10, padx=10, sticky="w")
