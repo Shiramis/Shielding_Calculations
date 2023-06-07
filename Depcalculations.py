@@ -39,6 +39,8 @@ class departprimsec():
                     for x in range(1, 13):
                         if self.d["vsexroom " + str(t)].get() == ws['A' + str(x)].value:
                             self.n = float(self.d["worentry " + str(t)].get())/ (ws['B' + str(x)].value)
+                    if self.d["vselxray "+ str(t)].get() == 2:
+                        self.n = float(self.d["worentry " + str(t)].get()) /2.5
                 # ========================primary αβγ========================
                 ws = wb['prim abc']
                 for x in range(2, 39):
@@ -69,6 +71,8 @@ class departprimsec():
                     for x in range(2, 13):
                         if self.d["vsexroom " + str(e)+nr].get() == ws['A' + str(x)].value:
                             self.n = float(self.d["worentry " + str(e)+nr].get())/ (ws['B' + str(x)].value)
+                    if self.d["vselxray "+ str(e)+nr].get() == 2:
+                        self.n = float(self.d["worentry " + str(e)+nr].get()) /2.5
                 # ========================primary αβγ========================
                 ws = wb['prim abc']
                 for x in range(3, 39):
@@ -111,13 +115,16 @@ class departprimsec():
             # ====================K1" air kerma"================
             ws = wb['unshielding prim']
             self.K1=1
-            for i in range(1, 6):
-                if self.d["vselroom "+str(t)].get() == "From X-Ray room":
-                    if self.d["vsexroom " + str(e)+nr].get() == ws['A' + str(i)].value:
-                        self.K1 = float(ws['C' + str(i)].value)
-                else:
-                    if self.d["vsexroom " + str(t)].get() == ws['A' + str(i)].value:
-                        self.K1 = float(ws['C' + str(i)].value)
+            if self.d["preshuns " + str(e) + nr].get()== 1:
+                self.K1 = float(self.d["entk " + str(e) + nr].get())
+            else:
+                for i in range(1, 6):
+                    if self.d["vselroom "+str(t)].get() == "From X-Ray room":
+                        if self.d["vsexroom " + str(e)+nr].get() == ws['A' + str(i)].value:
+                            self.K1 = float(ws['C' + str(i)].value)
+                    else:
+                        if self.d["vsexroom " + str(t)].get() == ws['A' + str(i)].value:
+                            self.K1 = float(ws['C' + str(i)].value)
             #=====================Use Factor=====================
             self.Us = float(self.d["use_ent " + str(e)].get())
             #===============Preshielding=====================
@@ -242,6 +249,8 @@ class departprimsec():
                     for x in range(3, 12):
                         if self.d["vsexroom " + str(t)].get() == ws['A' + str(x)].value:
                             self.n = float(self.d["worentry " + str(t)].get())/ (ws['B' + str(x)].value)
+                    if self.d["vselxray "+ str(t)].get() == 2:
+                        self.n = float(self.d["worentry " + str(t)].get()) /2.5
                 ws = wb['sec abc']
                 # ====================secondary αβγ============================
                 for i in range(3, 18):
@@ -273,6 +282,8 @@ class departprimsec():
                     for x in range(3, 12):
                         if self.d["vsexroom " + str(e)+nr].get() == ws['A' + str(x)].value:
                             self.n = float(self.d["worentry " + str(e)+nr].get())/ (ws['B' + str(x)].value)
+                    if self.d["vselxray "+ str(e)+nr].get() == 2:
+                        self.n = float(self.d["worentry " + str(e)+nr].get()) /2.5
                 ws = wb['sec abc']
                 # ====================secondary αβγ============================
                 for i in range(3, 18):
